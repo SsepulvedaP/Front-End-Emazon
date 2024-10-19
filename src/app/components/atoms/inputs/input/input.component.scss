@@ -1,0 +1,26 @@
+@import '../../../../../assets/screen-sizes/screen-sizes.scss';
+
+div {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+input {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    margin-top: 2px;
+}
+
+@media (min-width:#{map-get($screen-sizes, tablet)}) {
+    input {
+        width: 380px;
+    }
+}
