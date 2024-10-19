@@ -1,0 +1,15 @@
+@import '../../../../../assets/logos/logos.scss'; 
+
+// Estilos para el logo basados en los tamaños
+.large {
+  width: map-get($logo-sizes, large);
+  border-radius: 50%;
+}
+
+.medium {
+  width: map-get($logo-sizes, medium);
+}
+
+.small {
+  width: map-get($logo-sizes, small);
+}

@@ -30,7 +30,16 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "src/assets/colors",
+                "src/assets/design-tokens",
+                "src/assets/logos",
+                "src/assets/typography",
+                "src/assets/screen-sizes"
+              ]
+            }
           },
           "configurations": {
             "production": {

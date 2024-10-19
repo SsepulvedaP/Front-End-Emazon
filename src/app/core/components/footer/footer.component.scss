@@ -1,0 +1,15 @@
+@import '../../../../assets/colors/colors.scss'; 
+
+
+:host {
+  display: block;
+  margin-top: auto;
+}
+
+footer {
+  background-color: $black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
