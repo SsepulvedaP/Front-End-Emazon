@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PageComponent } from './page.component';
-import { CoreModule } from '../../core.module';
+import { ActivatedRoute } from '@angular/router';
+import { of } from 'rxjs';
 
 describe('PageComponent', () => {
   let component: PageComponent;
@@ -9,10 +9,21 @@ describe('PageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PageComponent ],
-      imports: [CoreModule, BrowserAnimationsModule]
-    })
-    .compileComponents();
+      declarations: [PageComponent],
+      providers: [
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            params: of({ id: '123' }),
+            snapshot: {
+              paramMap: {
+                get: () => '123'
+              }
+            }
+          }
+        }
+      ]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(PageComponent);
     component = fixture.componentInstance;
@@ -22,4 +33,6 @@ describe('PageComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  // Agrega más pruebas aquí
 });

@@ -1,18 +1,51 @@
 @import '../../../../assets/colors/colors.scss'; 
 
 .header {
+  display: flex;
+  justify-content: space-between; // Alinea el logo y el menú en extremos opuestos
+  align-items: center;  
+  padding: 10px 20px; // Ajusta el padding para mayor espacio lateral
+  background-color: $black;  
+  color: $white;  
+
+  .logo-container {
     display: flex;
-    align-items: center;  
-    padding: 10px;
-    background-color: $black;  
-    color: $white;  
-  
+    align-items: center;
+    gap: 15px; // Espacio entre el logo y el título
+
     app-logo {
       margin-right: 15px;  
     }
-  
+
     h1 {
       color: $white;  
       margin: 0;  
+      font-size: 1.5rem; // Ajusta el tamaño de la fuente si es necesario
     }
   }
+
+  .nav-menu {
+    ul {
+      list-style: none;
+      display: flex;
+      gap: 20px; // Espacio entre cada elemento del menú
+
+      li {
+        a {
+          color: $white;  
+          text-decoration: none;
+          padding: 5px 10px;  
+          transition: color 0.3s ease;
+
+          &.active {
+            border-bottom: 2px solid $white; // Línea en la parte inferior para la pestaña activa
+          }
+
+          &:hover {
+            color: $purple; // Cambia al color deseado al pasar el mouse
+          }
+        }
+      }
+    }
+  }
+}
