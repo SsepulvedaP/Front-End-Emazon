@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  public authToken: string = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpZCI6MTQsInN1YiI6InNlYmFzdGlhbkBwcmFnbWEuY29tIiwiaWF0IjoxNzI5Mzk0OTg5LCJleHAiOjE3Mjk0ODEzODl9.ZJ71cQyeCfIAGSFP5dLPPZh7vFVJlDSbyF8UaSB0Fa4'; // Reemplaza con tu token actual
+  public authToken: string = 'eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjpbeyJhdXRob3JpdHkiOiJST0xFX0FETUlOIn1dLCJpZCI6MTQsInN1YiI6InNlYmFzdGlhbkBwcmFnbWEuY29tIiwiaWF0IjoxNzI5NTQyMjYxLCJleHAiOjE3Mjk2Mjg2NjF9.auV2bQhq6o0QKQNtWPZj6UqAomS84Yihgvs7g3s6nv4'; // Reemplaza con tu token actual
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // URLs que no requieren autenticación
