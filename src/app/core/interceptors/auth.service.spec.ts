@@ -27,6 +27,14 @@ describe('AuthInterceptor', () => {
     expect(req.request.headers.get('Authorization')).toBe(`Bearer ${new AuthInterceptor().authToken}`);
   });
 
+  it('should not add Authorization header for noAuthUrls', () => {
+    httpClient.get('/categories/paged').subscribe();
+  
+    const req = httpMock.expectOne('/categories/paged');
+    expect(req.request.headers.has('Authorization')).toBeFalsy();
+  });
+  
+
   afterEach(() => {
     httpMock.verify();
   });

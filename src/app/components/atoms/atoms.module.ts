@@ -4,12 +4,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainButtonComponent } from './buttons/main-button/main-button.component';
 import { LogoComponent } from './logos/logo/logo.component';
 import { InputComponent } from './inputs/input/input.component';
+import { SortSelectorComponent } from './sort-selector/sort-selector.component';
 
 @NgModule({
   declarations: [
     MainButtonComponent,
     LogoComponent,
     InputComponent,
+    SortSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { InputComponent } from './inputs/input/input.component';
   exports: [
     MainButtonComponent,
     LogoComponent,
-    InputComponent
+    InputComponent,
+    SortSelectorComponent,
   ],
   schemas: [NO_ERRORS_SCHEMA]
   

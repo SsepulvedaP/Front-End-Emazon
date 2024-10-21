@@ -20,4 +20,12 @@ describe('SearchInputComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+  
+
+  it('should emit search event on input change', () => {
+    const searchSpy = jest.spyOn(component.search, 'emit');
+    component.onSearchChange('test');
+    expect(searchSpy).toHaveBeenCalledWith('test');
+  });
+  
 });
