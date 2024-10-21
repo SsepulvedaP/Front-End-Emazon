@@ -14,6 +14,5 @@ export class CardFormComponent {
 
   onFormSubmit(formData: any): void {
     this.submitForm.emit(formData);
-    console.log('Form submitted with data: ', formData);
   }
 }

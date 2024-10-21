@@ -87,6 +87,74 @@ describe('CategoryService', () => {
     );
   });
 
+  it('should retrieve paged categories with sorting', () => {
+    service.getCategoriesPaged(1, 5, 'name', 'asc').subscribe();
+  
+    const req = httpMock.expectOne(
+      `${service['url']}paged?page=1&size=5&sort=name,asc`
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [], totalPages: 1 });
+  });
+
+  it('should handle 400 error when creating a category', () => {
+    const categoryData = { name: 'ErrorCategory', description: 'Invalid data' };
+  
+    service.create(categoryData).subscribe({
+      error: (error) => {
+        expect(error).toBeDefined();
+        expect(error.message).toContain(CATEGORY_CREATE_ERROR);
+      },
+    });
+  
+    const req = httpMock.expectOne(`${service['url']}`);
+    req.flush({}, { status: 400, statusText: 'Bad Request' });
+  });
+  
+  it('should retrieve paged categories with descending sorting', () => {
+    service.getCategoriesPaged(1, 5, 'name', 'desc').subscribe();
+  
+    const req = httpMock.expectOne(
+      `${service['url']}paged?page=1&size=5&sort=name,desc`
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [], totalPages: 1 });
+  });
+
+  it('should retrieve paged categories with default parameters', () => {
+    service.getPagedCategories().subscribe();
+  
+    const req = httpMock.expectOne(
+      `${service['url']}paged?page=3&size=4`
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [], totalPages: 1 });
+  });
+
+  it('should retrieve paged categories with specific parameters', () => {
+    service.getPagedCategories(2, 10).subscribe();
+  
+    const req = httpMock.expectOne(
+      `${service['url']}paged?page=2&size=10`
+    );
+    expect(req.request.method).toBe('GET');
+    req.flush({ content: [], totalPages: 1 });
+  });
+
+  it('should handle 404 error when creating a category', () => {
+    const categoryData = { name: 'NonExistentCategory', description: 'This category does not exist' };
+  
+    service.create(categoryData).subscribe({
+      error: (error) => {
+        expect(error).toBeDefined();
+        expect(error.message).toContain(CATEGORY_CREATE_ERROR);
+      },
+    });
+  
+    const req = httpMock.expectOne(`${service['url']}`);
+    req.flush({}, { status: 404, statusText: 'Not Found' });
+  });
+
   afterEach(() => {
     httpMock.verify();
   });

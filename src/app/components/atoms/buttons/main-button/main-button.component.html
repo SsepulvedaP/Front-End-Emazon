@@ -1,6 +1,6 @@
 <button 
   [ngClass]="[size, type]" 
   [disabled]="disabled"
-  [attr.type]="htmlType">
+  [attr.type]="htmlType || 'submit'">
   {{ label }}
 </button>

@@ -1,14 +1,14 @@
 @import '../../../../assets/colors/colors.scss'; // Asegúrate de que la ruta sea correcta según la estructura de tu proyecto
 
 .data-form-container {
-  background-color: $white;  // Fondo blanco
+  background-color: $white; 
   padding: 20px;
   border-radius: 8px;
-  max-width: 500px;  // Asegura que el formulario tenga un tamaño adecuado
+  max-width: 500px;  
   margin: 0 auto;
 
   h2 {
-    font-size: 24px;
+    font-size: 30px;
     font-weight: 600;
     margin-bottom: 20px;
     color: $black;
@@ -27,7 +27,7 @@
 
     .error-message {
       color: $error;
-      font-size: 14px;
+      font-size: 30px;
       margin-top: 5px;
       width: 100%;
       max-width: 400px;  // Alinea los mensajes de error con los inputs

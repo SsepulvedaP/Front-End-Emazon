@@ -17,29 +17,39 @@ export class CategoryService {
     this.url = `${environment.stockApiUrl}categories/`;
   }
 
+  // Método para crear una categoría
   create(categoryData: Category): Observable<boolean> {
     return this.http.post(this.url, categoryData).pipe(
       map(() => {
-        // Mostrar el mensaje de éxito
         this.toast.showToast({
           type: TOAST_STATE.success,
           text: CATEGORY_CREATED_SUCCESSFULLY
         });
-        return true; 
+        return true;
       }),
       catchError((err: HttpErrorResponse) => {
-        const errorMessage = err.error?.message 
+        const errorMessage = err.error?.message
           ? `${CATEGORY_CREATE_ERROR}: ${err.error.message}`
           : CATEGORY_CREATE_ERROR;
-        
-        // Mostrar el mensaje de error
         this.toast.showToast({
           type: TOAST_STATE.error,
           text: errorMessage
         });
-
         return throwError(() => new Error(errorMessage));
       })
     );
   }
+
+  // Método para obtener categorías paginadas
+  getPagedCategories(page: number = 3, size: number = 4): Observable<any> {
+    return this.http.get<any>(`${this.url}paged?page=${page}&size=${size}`);
+  }
+
+  getCategoriesPaged(page: number, size: number, sortField: string, sortOrder: string): Observable<any> {
+    const params = `?page=${page}&size=${size}&sort=${sortField},${sortOrder}`;
+    return this.http.get<any>(`${this.url}paged${params}`);
+  }
+  
+
 }
+
