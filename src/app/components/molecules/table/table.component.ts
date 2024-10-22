@@ -29,18 +29,11 @@ export class TableComponent implements OnChanges {
     }
   }
 
-  onSortChange(value: string): void {
-    const [sortField, sortOrder] = value.split(',');
-    this.sortField = sortField;
-    this.sortOrder = sortOrder as 'asc' | 'desc';
-    this.sortData();
-  }
-
   private sortData(): void {
     this.data.sort((a, b) => {
-      const valueA = a[this.sortField];
-      const valueB = b[this.sortField];
-
+      const valueA = a[this.sortField] ?? '';
+      const valueB = b[this.sortField] ?? '';
+  
       if (valueA < valueB) {
         return this.sortOrder === 'asc' ? -1 : 1;
       }
@@ -51,8 +44,19 @@ export class TableComponent implements OnChanges {
     });
     this.paginateData();
   }
+  
+  onSortChange(value: string): void {
+    const [sortField, sortOrder] = value.split(',');
+    this.sortField = sortField;
+    this.sortOrder = sortOrder === 'asc' || sortOrder === 'desc' ? sortOrder as 'asc' | 'desc' : 'asc';
+    this.sortData();
+  }
 
   private paginateData(): void {
+    if (!this.data) {
+      this.paginatedData = [];
+      return;
+    }
     const start = this.currentPage * this.pageSize;
     const end = start + this.pageSize;
     this.paginatedData = this.data.slice(start, end);

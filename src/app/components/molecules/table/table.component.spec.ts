@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TableComponent } from './table.component';
 import { SortSelectorComponent } from '../../atoms/sort-selector/sort-selector.component';
+
 describe('TableComponent', () => {
   let component: TableComponent;
   let fixture: ComponentFixture<TableComponent>;
@@ -43,6 +44,13 @@ describe('TableComponent', () => {
     expect(component.data[3].name).toBe('Item A');
   });
 
+  it('should handle sorting with undefined or null values', () => {
+    component.data.push({ name: undefined, description: 'No Name' });
+    component.onSortChange('name,asc');
+    expect(component.data[0].name).toBeUndefined();
+    expect(component.data[component.data.length - 1].name).toBe('Item D');
+  });
+
   it('should render table rows', () => {
     const rows = fixture.nativeElement.querySelectorAll('tbody tr');
     expect(rows.length).toBe(4); // Because pageSize is 2
@@ -64,16 +72,46 @@ describe('TableComponent', () => {
     expect(component.data[0].name).toBe('Item A');
   });
 
-
-
-  it('should select a row', () => {
-    const row = { name: 'Item A', description: 'Description A' };
-    component.onRowSelect(row);
-    expect(component.selectedRow).toBe(row);
+  it('should handle null data', () => {
+    component.data = null as any;
+    component.ngOnChanges({
+      data: { currentValue: null, previousValue: [], firstChange: false, isFirstChange: () => false }
+    });
+    fixture.detectChanges();
+    expect(component.paginatedData.length).toBe(0);
   });
 
+  it('should handle pagination boundaries', () => {
+    expect(component.getTotalPages()).toBe(2);
+
+    component.onPageChange(0);
+    expect(component.paginatedData.length).toBe(2);
+    expect(component.paginatedData[0].name).toBe('Item A');
+
+    component.onPageChange(1);
+    expect(component.paginatedData.length).toBe(2);
+    expect(component.paginatedData[0].name).toBe('Item C');
+
+    component.onPageChange(2); // Invalid page number, should not change
+    expect(component.paginatedData[0].name).toBe('Item C');
+  });
+
+  it('should handle onPageChange with negative page number', () => {
+    component.onPageChange(-1);
+    expect(component.currentPage).toBe(0);
+  });
+
+  
+
+  it('should handle sorting with undefined or null values', () => {
+    component.data.push({ name: undefined, description: 'No Name' });
+    component.onSortChange('name,asc');
+    expect(component.data[0].name).toBeUndefined();
+    expect(component.data[component.data.length - 1].name).toBe('Item D');
+  });
+  
   it('should handle null data', () => {
-    component.data = [];
+    component.data = null as any;
     component.ngOnChanges({
       data: { currentValue: null, previousValue: [], firstChange: false, isFirstChange: () => false }
     });
@@ -81,27 +119,12 @@ describe('TableComponent', () => {
     expect(component.paginatedData.length).toBe(0);
   });
   
-  it('should sort and filter data', () => {
-    component.onFilterChange('Item');
-    component.onSortChange('name,desc');
-    expect(component.data[0].name).toBe('Item D');
-    expect(component.data[3].name).toBe('Item A');
-  });
+ 
   
-  it('should handle pagination boundaries', () => {
-    expect(component.getTotalPages()).toBe(2);
-    
-    component.onPageChange(0);
-    expect(component.paginatedData.length).toBe(2);
-    expect(component.paginatedData[0].name).toBe('Item A');
-    
-    component.onPageChange(1);
-    expect(component.paginatedData.length).toBe(2);
-    expect(component.paginatedData[0].name).toBe('Item C');
-    
-    component.onPageChange(2);
-    expect(component.paginatedData.length).toBe(2);
-    expect(component.paginatedData[0].name).toBe('Item C');
+  it('should handle onSortChange with invalid sort direction', () => {
+    component.onSortChange('name,invalidDirection');
+    expect(component.data[0].name).toBe('Item A');
+    expect(component.data[3].name).toBe('Item D');
   });
 
   it('should handle filter with no results', () => {
@@ -119,5 +142,29 @@ describe('TableComponent', () => {
     component.onSortChange('value,asc');
     expect(component.data[0].name).toBe('Item A');
     expect(component.data[1].name).toBe('Item B');
+  });
+
+  it('should handle onSortChange with invalid sort field', () => {
+    component.onSortChange('invalidField,asc');
+    expect(component.data[0].name).toBe('Item A');
+    expect(component.data[3].name).toBe('Item D');
+  });
+
+  it('should handle onSortChange with invalid sort direction', () => {
+    component.onSortChange('name,invalidDirection');
+    expect(component.data[0].name).toBe('Item A');
+    expect(component.data[3].name).toBe('Item D');
+  });
+
+  it('should handle onFilterChange with empty filter', () => {
+    component.onFilterChange('');
+    expect(component.data.length).toBe(4);
+  });
+
+  it('should retain selection after sorting', () => {
+    const row = { name: 'Item A', description: 'Description A' };
+    component.onRowSelect(row);
+    component.onSortChange('name,desc');
+    expect(component.selectedRow).toBe(row);
   });
 });

@@ -2,16 +2,21 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { ToastService } from '../toast.service';
 import { environment } from '../../../../environments/environment';
-import { Observable, throwError } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, of, throwError } from 'rxjs';
+import { map, catchError, shareReplay } from 'rxjs/operators';
 import { Category } from '../../models/category.model';
-import { CATEGORY_CREATED_SUCCESSFULLY, CATEGORY_CREATE_ERROR, TOAST_STATE } from '../../../shared/utils/constants/services-constants';
+import {
+  CATEGORY_CREATED_SUCCESSFULLY,
+  CATEGORY_CREATE_ERROR,
+  TOAST_STATE,
+} from '../../../shared/utils/constants/services-constants';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CategoryService {
   private url: string;
+  private cache: Map<string, any> = new Map();
 
   constructor(private http: HttpClient, private toast: ToastService) {
     this.url = `${environment.stockApiUrl}categories/`;
@@ -23,7 +28,7 @@ export class CategoryService {
       map(() => {
         this.toast.showToast({
           type: TOAST_STATE.success,
-          text: CATEGORY_CREATED_SUCCESSFULLY
+          text: CATEGORY_CREATED_SUCCESSFULLY,
         });
         return true;
       }),
@@ -33,23 +38,51 @@ export class CategoryService {
           : CATEGORY_CREATE_ERROR;
         this.toast.showToast({
           type: TOAST_STATE.error,
-          text: errorMessage
+          text: errorMessage,
         });
         return throwError(() => new Error(errorMessage));
       })
     );
   }
 
-  // Método para obtener categorías paginadas
+  // Método para obtener categorías paginadas con caché
   getPagedCategories(page: number = 3, size: number = 4): Observable<any> {
-    return this.http.get<any>(`${this.url}paged?page=${page}&size=${size}`);
+    const cacheKey = `paged_${page}_${size}`;
+    if (this.cache.has(cacheKey)) {
+      return of(this.cache.get(cacheKey));
+    }
+    return this.http.get<any>(`${this.url}paged?page=${page}&size=${size}`).pipe(
+      map((response) => {
+        this.cache.set(cacheKey, response);
+        return response;
+      }),
+      shareReplay(1) // Comparte la respuesta entre múltiples suscriptores.
+    );
   }
 
-  getCategoriesPaged(page: number, size: number, sortField: string, sortOrder: string): Observable<any> {
+  // Método para obtener categorías paginadas con ordenamiento, usando caché
+  getCategoriesPaged(
+    page: number,
+    size: number,
+    sortField: string,
+    sortOrder: string
+  ): Observable<any> {
+    const cacheKey = `paged_${page}_${size}_${sortField}_${sortOrder}`;
+    if (this.cache.has(cacheKey)) {
+      return of(this.cache.get(cacheKey));
+    }
     const params = `?page=${page}&size=${size}&sort=${sortField},${sortOrder}`;
-    return this.http.get<any>(`${this.url}paged${params}`);
+    return this.http.get<any>(`${this.url}paged${params}`).pipe(
+      map((response) => {
+        this.cache.set(cacheKey, response);
+        return response;
+      }),
+      shareReplay(1)
+    );
   }
-  
 
+  // Método para limpiar la caché si es necesario
+  clearCache(): void {
+    this.cache.clear();
+  }
 }
-
