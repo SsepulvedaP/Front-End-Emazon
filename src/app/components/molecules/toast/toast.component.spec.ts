@@ -1,19 +1,30 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { of } from 'rxjs';
 import { ToastComponent } from './toast.component';
+import { ToastService, ToastMessage } from '../../../core/services/toast.service';
 
 describe('ToastComponent', () => {
   let component: ToastComponent;
   let fixture: ComponentFixture<ToastComponent>;
+  let toastService: ToastService;
 
   beforeEach(async () => {
+    const toastServiceMock = {
+      toastMessages$: of([]),
+      removeToast: jest.fn()
+    };
+
     await TestBed.configureTestingModule({
-      declarations: [ ToastComponent ]
+      declarations: [ ToastComponent ],
+      providers: [
+        { provide: ToastService, useValue: toastServiceMock }
+      ]
     })
     .compileComponents();
 
     fixture = TestBed.createComponent(ToastComponent);
     component = fixture.componentInstance;
+    toastService = TestBed.inject(ToastService);
     fixture.detectChanges();
   });
 
@@ -41,4 +52,20 @@ describe('ToastComponent', () => {
     expect(component.getIconSrc('inform')).toContain('info-icon.png');
   });
 
+  it('should return empty string for unknown icon type', () => {
+    expect(component.getIconSrc('unknown' as any)).toBe('');
+  });
+
+  
+  it('should call removeToast on closeToast', () => {
+    const toastId = 1;
+    component.closeToast(toastId);
+    expect(toastService.removeToast).toHaveBeenCalledWith(toastId);
+  });
+
+  it('should unsubscribe on destroy', () => {
+    const unsubscribeSpy = jest.spyOn(component.subscription, 'unsubscribe');
+    component.ngOnDestroy();
+    expect(unsubscribeSpy).toHaveBeenCalled();
+  });
 });
