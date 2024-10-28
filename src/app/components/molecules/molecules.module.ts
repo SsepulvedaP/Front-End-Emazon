@@ -5,12 +5,14 @@ import { SearchInputComponent } from "./search-input/search-input.component";
 import { ToastComponent } from './toast/toast.component';
 import { ReactiveFormsModule } from "@angular/forms";
 import { TableComponent } from './table/table.component';
+import { DropdownComponent } from './dropdown/dropdown.component';
 
 @NgModule({
     declarations:[
         SearchInputComponent,
         ToastComponent,
         TableComponent,
+        DropdownComponent,
     ],
     imports:[
         CommonModule,
@@ -21,6 +23,7 @@ import { TableComponent } from './table/table.component';
         SearchInputComponent,
         ToastComponent,
         TableComponent,
+        DropdownComponent
     ]
 })
 export class MoleculesModule{}

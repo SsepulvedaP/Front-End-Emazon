@@ -8,7 +8,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // URLs que no requieren autenticación
-    const noAuthUrls = ['/categories/paged'];
+    const noAuthUrls = ['/categories/paged', '/brands/paged', '/products/paged', '/categories/',  '/brands/', '/products/'];
+
 
     // Verificar si la URL actual está en la lista de URLs sin autenticación
     const isNoAuthUrl = noAuthUrls.some(url => req.url.includes(url));

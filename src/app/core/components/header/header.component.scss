@@ -1,4 +1,5 @@
 @import '../../../../assets/colors/colors.scss'; 
+@import 'screen-sizes'; // Importa el archivo de variables de tamaño de pantalla
 
 .header {
   display: flex;
@@ -46,6 +47,54 @@
           }
         }
       }
+    }
+  }
+
+  .hamburger-menu {
+    display: none; // Ocultar el menú hamburguesa por defecto
+    flex-direction: column;
+    cursor: pointer;
+
+    span {
+      width: 25px;
+      height: 3px;
+      background-color: $white;
+      margin: 3px 0;
+      transition: transform 0.3s ease;
+    }
+  }
+
+  @media (max-width: map-get($screen-sizes, desktop)) {
+    .nav-menu {
+      position: absolute;
+      top: 60px; // Ajusta según tu diseño
+      right: 0;
+      background-color: $black;
+      width: 100%;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+
+      ul {
+        flex-direction: column;
+        gap: 10px; // Espacio entre los elementos del menú en la vista móvil
+
+        li {
+          margin: 1rem 0;
+
+          a {
+            padding: 10px 15px; // Ajusta el padding para la versión móvil
+          }
+        }
+      }
+
+      &.active {
+        display: flex;
+      }
+    }
+
+    .hamburger-menu {
+      display: flex; // Mostrar el menú hamburguesa en tamaños pequeños
     }
   }
 }

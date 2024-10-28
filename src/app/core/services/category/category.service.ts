@@ -45,6 +45,31 @@ export class CategoryService {
     );
   }
 
+   // Método para obtener todas las categorías
+   getAll(): Observable<Category[]> {
+    const cacheKey = 'allCategories';
+    if (this.cache.has(cacheKey)) {
+      return of(this.cache.get(cacheKey));
+    }
+
+    return this.http.get<Category[]>(this.url).pipe(
+      map((categories) => {
+        this.cache.set(cacheKey, categories);
+        return categories;
+      }),
+      catchError((error: HttpErrorResponse) => {
+        this.toast.showToast({
+          type: TOAST_STATE.error,
+          text: 'Failed to load categories',
+        });
+        return throwError(() => new Error('Failed to load categories'));
+      }),
+      shareReplay(1) // Compartir la respuesta entre múltiples suscriptores.
+    );
+  }
+
+
+
   // Método para obtener categorías paginadas con caché
   getPagedCategories(page: number = 3, size: number = 4): Observable<any> {
     const cacheKey = `paged_${page}_${size}`;
@@ -59,6 +84,8 @@ export class CategoryService {
       shareReplay(1) // Comparte la respuesta entre múltiples suscriptores.
     );
   }
+
+  
 
   // Método para obtener categorías paginadas con ordenamiento, usando caché
   getCategoriesPaged(

@@ -1,14 +1,20 @@
 <header class="header">
-      <div class="logo-container">
-        <app-logo></app-logo>
-        <h1>Emazon</h1>
-      </div>
-      <nav class="nav-menu">
-        <ul>
-          <li><a routerLink="/categories" routerLinkActive="active">Categories</a></li>
-          <li><a routerLink="/brands" routerLinkActive="active">Brands</a></li>
-          <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
-        </ul>
-      </nav>
-    </header>
-    
+  <div class="logo-container">
+    <app-logo></app-logo>
+    <h1>Emazon</h1>
+  </div>
+  <!-- Icono de menú hamburguesa -->
+  <div class="hamburger-menu" (click)="toggleMenu()" (keydown)="toggleMenu()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </div>
+  <!-- Menú de navegación -->
+  <nav class="nav-menu" [ngClass]="{'active': isMenuOpen}">
+    <ul>
+      <li><a routerLink="/categories" routerLinkActive="active">Categories</a></li>
+      <li><a routerLink="/brands" routerLinkActive="active">Brands</a></li>
+      <li><a routerLink="/products" routerLinkActive="active">Products</a></li>
+    </ul>
+  </nav>
+</header>
