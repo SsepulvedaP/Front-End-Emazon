@@ -55,7 +55,7 @@ describe('CategoryComponent', () => {
   });
 
   it('should create a category and add it to the list', () => {
-    const newCategory: Category = { name: 'New Category', description: 'New Description' };
+    const newCategory: Category = {id : 1, name: 'New Category', description: 'New Description' };
     mockCategoryService.create.mockReturnValue(of(true));
 
     component.handleSubmit(newCategory);
@@ -112,8 +112,8 @@ describe('CategoryComponent', () => {
 
   it('should filter categories based on search query', () => {
     component.categories = [
-      { name: 'Books', description: 'Various books' },
-      { name: 'Electronics', description: 'Devices and gadgets' },
+      {id : 1, name: 'Books', description: 'Various books' },
+      {id : 2, name: 'Electronics', description: 'Devices and gadgets' },
     ];
     component.onSearch('books');
     expect(component.categories.length).toBe(1);

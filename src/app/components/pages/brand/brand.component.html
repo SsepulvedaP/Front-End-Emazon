@@ -2,7 +2,9 @@
     <card-form 
       [title]="title" 
       [formTitle]="formTitle"
-      (submitForm)="handleSubmit($event)">
+      (submitForm)="handleSubmit($event)"
+      [maxNameLength]="50"
+      [maxDescriptionLength]="120">
     </card-form>
   
     <div class="tableWrap">

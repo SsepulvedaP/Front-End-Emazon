@@ -25,7 +25,7 @@ describe('CategoryService', () => {
 
   it('should create a category successfully', () => {
     const toastSpy = jest.spyOn(toastService, 'showToast');
-    const categoryData = { name: 'Books', description: 'A category for books' };
+    const categoryData = { id : 1, name: 'Books', description: 'A category for books' };
 
     service.create(categoryData).subscribe((response) => {
       expect(response).toBe(true);
@@ -45,7 +45,7 @@ describe('CategoryService', () => {
 
   it('should handle network error when creating a category', () => {
     const toastSpy = jest.spyOn(toastService, 'showToast');
-    const categoryData = { name: 'Invalid', description: 'Category causing error' };
+    const categoryData = {id : 1, name: 'Invalid', description: 'Category causing error' };
 
     service.create(categoryData).subscribe({
       error: (error) => {
@@ -67,7 +67,7 @@ describe('CategoryService', () => {
 
   it('should handle server error with specific message', () => {
     const toastSpy = jest.spyOn(toastService, 'showToast');
-    const categoryData = { name: 'Another', description: 'Another category' };
+    const categoryData = { id : 1, name: 'Another', description: 'Another category' };
 
     service.create(categoryData).subscribe({
       error: (error) => {
@@ -98,7 +98,7 @@ describe('CategoryService', () => {
   });
 
   it('should handle 400 error when creating a category', () => {
-    const categoryData = { name: 'ErrorCategory', description: 'Invalid data' };
+    const categoryData = {id : 1, name: 'ErrorCategory', description: 'Invalid data' };
   
     service.create(categoryData).subscribe({
       error: (error) => {
@@ -142,7 +142,7 @@ describe('CategoryService', () => {
   });
 
   it('should handle 404 error when creating a category', () => {
-    const categoryData = { name: 'NonExistentCategory', description: 'This category does not exist' };
+    const categoryData = { id : 1, name: 'NonExistentCategory', description: 'This category does not exist' };
   
     service.create(categoryData).subscribe({
       error: (error) => {
