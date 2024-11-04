@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from '@angular/common';
+import { OrganismsModule } from "../organisms/organisms.module";
 import { MoleculesModule } from "../molecules/molecules.module";
 import { AtomsModule } from "../atoms/atoms.module";
 import { CategoryComponent } from "./category/category.component";
@@ -17,7 +18,8 @@ import { ProductComponent } from './product/product.component';
         CommonModule,
         TemplatesModule,
         MoleculesModule, 
-        AtomsModule
+        AtomsModule,
+        OrganismsModule
     ]
 })
 export class PagesModule{}
